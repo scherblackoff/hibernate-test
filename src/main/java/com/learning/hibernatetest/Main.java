@@ -1,5 +1,6 @@
 package com.learning.hibernatetest;
 
+import com.learning.hibernatetest.model.MyProduct;
 import com.learning.hibernatetest.model.Person;
 import org.hibernate.cfg.Configuration;
 
@@ -15,22 +16,23 @@ public class Main {
                 .buildSessionFactory();
 // Из фабрики создаем EntityManager
         EntityManager em = factory.createEntityManager();
-        Person person = new Person("Ivan", "Ivanov");
+        MyProduct product = new MyProduct(99L, "orange");
+//        Person person = new Person("Ivan", "Ivanov");
 // Открываем транзакцию
         em.getTransaction().begin();
 // Create (сохраняем в базе данных, и благодаря этому сущность
 // становится управляемой Hibernate и заносится в контекст постоянства)
-        em.persist(person);
+        em.persist(product);
 // Подтверждаем транзакцию
         em.getTransaction().commit();
         em.getTransaction().begin();
 // Read (читаем сущность из базы данных по id)
-        Person anotherPerson = em.find(Person.class, 1L);
+        MyProduct anotherProduct = em.find(MyProduct.class, 1L);
         em.getTransaction().commit();
-        anotherPerson.setFirstname("Artem");
+        anotherProduct.setTitle("pineapple");
         em.getTransaction().begin();
 // Update
-        em.merge(anotherPerson);
+        em.merge(anotherProduct);
         em.getTransaction().commit();
     }
 }
